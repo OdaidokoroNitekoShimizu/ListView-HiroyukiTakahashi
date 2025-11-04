@@ -11,7 +11,7 @@ struct ContentView: View {
     var body: some View {
 
         FirstView()
-//        SecondView()
+        //        SecondView()
     }
 }
 
@@ -61,6 +61,7 @@ struct FirstView: View {
                     //リストを並べ替えたときに実行する処理
                     replaceRow(from, to)
                 }
+                .onDelete(perform: remove)
 
 
             }
@@ -77,8 +78,15 @@ struct FirstView: View {
     func replaceRow(_ from: IndexSet, _ to: Int){
         tasksArray.move(fromOffsets: from, toOffset: to) //配列内での並び替え
         if let encodedArray = try? JSONEncoder().encode(tasksArray) {
-                  tasksData = encodedArray // エンコードできたらAppStorageに渡す(保存・更新)
-               }
+            tasksData = encodedArray // エンコードできたらAppStorageに渡す(保存・更新)
+        }
+    }
+
+    func remove(index: IndexSet) {
+        tasksArray.remove(atOffsets: index)
+        if let encodedArray = try? JSONEncoder().encode(tasksArray) {
+            tasksData = encodedArray // エンコードできたらAppStorageに渡す(保存・更新)
+        }
     }
 }
 
